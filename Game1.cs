@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MyGame.Support;
 using System;
 using System.Collections.Generic;
 
@@ -22,6 +23,11 @@ namespace MyGame
 
         GameState gameState;
 
+        
+
+        Scrolling scrolling1;
+        Scrolling scrolling2; //3.38min vid:XNA TUTORIAL 9 - Scrolling Background
+
         public Game1()
         {
             sGraphics = new GraphicsDeviceManager(this);
@@ -32,12 +38,7 @@ namespace MyGame
             sContent = Content;
         }
 
-        /// <summary>
-        /// Allows the game to perform any initialization it needs to before starting to run.
-        /// This is where it can query for any required services and load any non-graphic
-        /// related content.  Calling base.Initialize will enumerate through any components
-        /// and initialize them as well.
-        /// </summary>
+        
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
@@ -56,6 +57,11 @@ namespace MyGame
             // Create a new SpriteBatch, which can be used to draw textures.
             sSpriteBatch = new SpriteBatch(GraphicsDevice);
             gameState = new GameState();
+            scrolling1 = new Scrolling(Content.Load<Texture2D>("background"), new Rectangle(0, 0, 1000, 800));
+            scrolling2 = new Scrolling(Content.Load<Texture2D>("background1"), new Rectangle(0, 500, 1000, 800));
+            
+
+
         }
 
         /// <summary>
@@ -77,6 +83,15 @@ namespace MyGame
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+            if (scrolling1.rectangle.Y + scrolling1.texture.Height <= 0)
+                scrolling1.rectangle.Y = scrolling2.rectangle.Y - 500;
+            if (scrolling2.rectangle.Y + scrolling2.texture.Height <= 0)
+                scrolling2.rectangle.Y = scrolling1.rectangle.Y - 500;
+
+
+            scrolling1.Update();
+            scrolling2.Update();
+
             gameState.Update(gameTime);
             base.Update(gameTime);
         }
@@ -91,6 +106,10 @@ namespace MyGame
 
             // TODO: Add your drawing code here
             sSpriteBatch.Begin();
+
+            scrolling1.Draw(sSpriteBatch);
+            scrolling2.Draw(sSpriteBatch);
+
             gameState.Draw(gameTime);
             sSpriteBatch.End();
 
