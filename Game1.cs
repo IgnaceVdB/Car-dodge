@@ -26,7 +26,8 @@ namespace MyGame
         
 
         Scrolling scrolling1;
-        Scrolling scrolling2; //3.38min vid:XNA TUTORIAL 9 - Scrolling Background
+        Scrolling scrolling2;
+        Scrolling scrolling3;//3.38min vid:XNA TUTORIAL 9 - Scrolling Background
 
         public Game1()
         {
@@ -57,9 +58,11 @@ namespace MyGame
             // Create a new SpriteBatch, which can be used to draw textures.
             sSpriteBatch = new SpriteBatch(GraphicsDevice);
             gameState = new GameState();
-            scrolling1 = new Scrolling(Content.Load<Texture2D>("background"), new Rectangle(0, 0, 1000, 800));
-            scrolling2 = new Scrolling(Content.Load<Texture2D>("background1"), new Rectangle(0, 500, 1000, 800));
-            
+            scrolling1 = new Scrolling(Content.Load<Texture2D>("background"), new Rectangle(0, 0, 1000, 500));
+            scrolling2 = new Scrolling(Content.Load<Texture2D>("background1"), new Rectangle(0, 500, 1000, 500));
+            scrolling3 = new Scrolling(Content.Load<Texture2D>("background"), new Rectangle(0, 1000, 1000, 500));
+
+
 
 
         }
@@ -84,10 +87,11 @@ namespace MyGame
                 Exit();
 
             if (scrolling1.rectangle.Y + scrolling1.texture.Height <= 0)
-                scrolling1.rectangle.Y = scrolling2.rectangle.Y - 500;
+                scrolling1.rectangle.Y += 1500;
             if (scrolling2.rectangle.Y + scrolling2.texture.Height <= 0)
-                scrolling2.rectangle.Y = scrolling1.rectangle.Y - 500;
-
+                scrolling2.rectangle.Y += 1500 ;
+            if (scrolling3.rectangle.Y + scrolling3.texture.Height <= 0)
+                scrolling3.rectangle.Y += 1500;
 
             scrolling1.Update();
             scrolling2.Update();
@@ -109,6 +113,7 @@ namespace MyGame
 
             scrolling1.Draw(sSpriteBatch);
             scrolling2.Draw(sSpriteBatch);
+            scrolling3.Draw(sSpriteBatch);
 
             gameState.Draw(gameTime);
             sSpriteBatch.End();
