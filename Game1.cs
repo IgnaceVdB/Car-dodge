@@ -26,8 +26,10 @@ namespace MyGame
         
 
         Scrolling scrolling1;
-        Scrolling scrolling2;
-        Scrolling scrolling3;//3.38min vid:XNA TUTORIAL 9 - Scrolling Background
+        Scrolling scrolling2;//3.38min vid:XNA TUTORIAL 9 - Scrolling Background
+        Scrolling scrolling3;
+        Sanic sanic;
+       
 
         public Game1()
         {
@@ -58,9 +60,12 @@ namespace MyGame
             // Create a new SpriteBatch, which can be used to draw textures.
             sSpriteBatch = new SpriteBatch(GraphicsDevice);
             gameState = new GameState();
-            scrolling1 = new Scrolling(Content.Load<Texture2D>("background"), new Rectangle(0, 0, 1000, 500));
+            scrolling1 = new Scrolling(Content.Load<Texture2D>("background1"), new Rectangle(0, 0, 1000, 500));
             scrolling2 = new Scrolling(Content.Load<Texture2D>("background1"), new Rectangle(0, 500, 1000, 500));
-            scrolling3 = new Scrolling(Content.Load<Texture2D>("background"), new Rectangle(0, 1000, 1000, 500));
+            scrolling3 = new Scrolling(Content.Load<Texture2D>("background1"), new Rectangle(0, 1000, 1000, 500));
+            sanic = new Sanic(new Vector2(0,0.8f));
+
+            
 
 
 
@@ -86,15 +91,19 @@ namespace MyGame
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            if (scrolling1.rectangle.Y + scrolling1.texture.Height <= 0)
+            if (scrolling1.rectangle.Y + scrolling1.texture.Height <= 100)
                 scrolling1.rectangle.Y += 1500;
-            if (scrolling2.rectangle.Y + scrolling2.texture.Height <= 0)
+            if (scrolling2.rectangle.Y + scrolling2.texture.Height <= 100)
                 scrolling2.rectangle.Y += 1500 ;
-            if (scrolling3.rectangle.Y + scrolling3.texture.Height <= 0)
+            if (scrolling3.rectangle.Y + scrolling3.texture.Height <= 100)
                 scrolling3.rectangle.Y += 1500;
 
+            sanic.Update(gameTime);
             scrolling1.Update();
             scrolling2.Update();
+            scrolling3.Update();
+
+            
 
             gameState.Update(gameTime);
             base.Update(gameTime);
@@ -114,6 +123,8 @@ namespace MyGame
             scrolling1.Draw(sSpriteBatch);
             scrolling2.Draw(sSpriteBatch);
             scrolling3.Draw(sSpriteBatch);
+
+            sanic.Draw();
 
             gameState.Draw(gameTime);
             sSpriteBatch.End();
